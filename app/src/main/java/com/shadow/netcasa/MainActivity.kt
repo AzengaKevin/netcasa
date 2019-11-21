@@ -8,6 +8,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -45,6 +46,21 @@ class MainActivity : AppCompatActivity() {
             display.reload()
         }
 
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        display.viewTreeObserver.addOnScrollChangedListener {
+            swipeToRefreshLayout.isEnabled = display.scrollY == 0
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        display.viewTreeObserver.removeOnScrollChangedListener {
+            //Do nothing
+        }
     }
 
     override fun onBackPressed() {
